@@ -1,0 +1,17 @@
+{
+    "look": [
+        "look",
+        "view"
+    ],
+    "move": [
+        "move",
+        "go",
+        "run",
+        "walk",
+        "head"
+    ],
+    "quit": [
+        "quit",
+        "exit"
+    ]
+}
