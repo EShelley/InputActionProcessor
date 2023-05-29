@@ -53,15 +53,7 @@ int main()
     }
 }
 
-/**  Possibly declare a new Type for actions later to make it easier to process?  For now Ill just use a std::vector<std::string>
-struct ActionType {
-    std::string Verb;
-    std::string DirectObject;
-    std::vector<std::string> IndirectObjects;
-};
-*/
-
-// generated with ChatGPTs help
+// below generated with ChatGPTs help
 
 
 // converts an std::string to lowercase
@@ -97,6 +89,60 @@ std::vector<std::string> tokenizeInput(const std::string& input) {
     return tokens;
 }
 
+
+/**
+    Currently takes the direct input from the player and parses it into an action matched againts the synonymMap
+    As this is Tranfered into a container class most of this will be internal, and the interface api will most likel
+    be one function that takes the raw input and processes it into actions the game model/engine understands.
+    Notes about the return format:
+        Maybe a struct?
+        struct ActionType {
+            std::string Verb;  - simplified verb the game model understands
+            std::string OriginalVerb; - If the word was a synonym of the Verb possibly return for displaying later when returning the result to the player,l possible added snark?
+            std::string DirectObject; - The entity that is the subject of the action: Command: look at table -> Verb: Look, DirectObject: Table
+            std::vector<std::string> IndirectObjects; - Possible list of secondary entities required for an action
+        };
+
+        Command: Break chest with axe
+        Interpretation:
+            Verb: use
+            OriginalVerb: break
+            DirectObject: chest
+            IndirectObjects[0]: axe
+
+            - Checks could then be preformed to see if:
+                a) The player has an Axe
+                b) The state of the Chest: Is it open already? - Is it even locked? - Did the player check?  all flags that could shape the response given back to the player
+                c) Can the axe even damage the chest etc.
+                Finally the result is either pass or fail with the added benefit of immersive language/snarky comments to go with that.
+                
+                "After breaking into the chest, you relize it was unlocked this entire time."
+                "You hit the metal chest with the axe, but it doesnt seem to have any effect"
+                    - Player does it again?
+                "You keep hitting the chest with the axe until you become tired. I dont think this is going to work" - Then provided a hint? "Maybe you should look for a key?"
+
+        As the interpreter is parsing the input, it should ignore words that dont help determing the intent of an action ie(articles, extra adjectives etc):
+        
+        Building off the last example:
+        Command: Break the damned chest with my axe
+        Utimately this should result in the same interpretation:
+        Interpretation:
+            Verb: use
+            OriginalVerb: break
+            DirectObject: chest
+            IndirectObjects[0]: axe
+
+        One way that comes to mind in doing this will be to have the game build a list of valid "nouns" that can be acted upon.  This is then passed over to the input processor
+        for use in validating input.
+
+        Another way to handle this would be in the games grammar and syntax
+        use axe on chest - breaks the chest open
+        hit chest with axe - same
+
+        For error handling/snark factor - if an input has words contained in a "profanity" list and no defined action verb etc.  The error could be "You sounds angry, you may want to take a breath (Remember HELP is always available if you get stuck)."  
+            This hinting that the player should check the help for command suggestions etc, this could also be taylored in situations where certain items are needed for a puzzle etc.  "The door has an old lock on it with the imprint of a star above it"
+            When the player has a "key" in their inventory that has a star on it.  The game should also be flexable enough to understand if the player were to say either use key on door, use the star key on the door etc.
+**/
 std::string getAction(const std::string& input, const std::unordered_map<std::string, std::vector<std::string>>& synonymMap) {
  
     // Tokenize Input Sting
@@ -148,14 +194,3 @@ std::unordered_map<std::string, std::vector<std::string>> loadMapFromJSON(const 
     return myMap;
 }
 
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
