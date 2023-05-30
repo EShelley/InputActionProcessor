@@ -12,7 +12,8 @@ std::unordered_map<std::string, std::vector<std::string>> loadMapFromJSON(const 
 // #define TOKEN_DEBUGGER
 
 int main()
-{    
+{   
+    
     InputProcessor b = InputProcessor();
     b.loadMapFromJSON("./commands.json");
     b.DisplayCommands();

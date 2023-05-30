@@ -13,6 +13,13 @@
 #include"nlohmann/json.hpp"
 using json = nlohmann::json;
 
+
+
+// InputProcessor:
+//  - Processes the raw input from player into a useful format
+// 
+// TODO: add ability to attach a logger eventually?
+//
 class InputProcessor
 {
 public:
@@ -128,7 +135,7 @@ public:
         return "ERROR: I dont Understand that Command";  // Or you can define an "unknown" action
     }
 
-
+    
 
     // used for testing
     void DisplayCommands() {

@@ -136,6 +136,9 @@
     <ClInclude Include="InputProcessor.h" />
     <ClInclude Include="nlohmann\json.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="commands.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,7 +1,8 @@
 {
     "look": [
         "look",
-        "view"
+        "view",
+        "examine"
     ],
     "move": [
         "move",
