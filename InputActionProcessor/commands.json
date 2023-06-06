@@ -1,18 +1,30 @@
 {
-    "look": [
-        "look",
-        "view",
-        "examine"
-    ],
-    "move": [
-        "move",
-        "go",
-        "run",
-        "walk",
-        "head"
-    ],
-    "quit": [
-        "quit",
-        "exit"
-    ]
+  "look": [
+    "look",
+    "view",
+    "examine"
+  ],
+  "move": [
+    "move",
+    "go",
+    "run",
+    "walk",
+    "head"
+  ],
+  "drop": [
+    "drop",
+    "discard"
+  ],
+  "use": [
+    "use"
+  ],
+  "pickup": [
+    "pickup",
+    "grab",
+    "take"
+  ],
+  "quit": [
+    "quit",
+    "exit"
+  ]
 }
