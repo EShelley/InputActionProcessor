@@ -208,6 +208,8 @@ private:
 
         // tokenize the input string while converting everything to lowercase
         while (iss >> token) {
+            if (std::find(this->conjuctionList.begin(), this->conjuctionList.end(), token) != this->conjuctionList.end())
+                continue;
             tokens.push_back(token);
         }
 
