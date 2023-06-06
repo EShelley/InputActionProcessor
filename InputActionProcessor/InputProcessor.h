@@ -13,6 +13,8 @@
 #include"nlohmann/json.hpp"
 using json = nlohmann::json;
 
+//#define TOKEN_DEBUGGER
+
 
 
 // InputProcessor:
@@ -23,7 +25,13 @@ using json = nlohmann::json;
 class InputProcessor
 {
 public:
-	InputProcessor() {};
+	InputProcessor(std::string CommandList) {
+        // load the command list
+        this->loadMapFromJSON(CommandList);
+
+        //  Build Vocabulary
+        this->BuildVocabulary();
+    };
 	~InputProcessor() {};
 
     // Loads the JSON data from commands.json directly into this->commandMap
@@ -117,6 +125,9 @@ public:
         if (tokens.empty())
             return "Ok brain, tell me what to do please";
 
+
+
+        // Check Synonyms
         for (const auto& actionSynonyms : this->commandMap) {
             const std::string& action = actionSynonyms.first;
             const std::vector<std::string>& synonyms = actionSynonyms.second;
@@ -150,10 +161,35 @@ public:
         }
     }
 
-
+   
 
 private:
 	std::unordered_map<std::string, std::vector<std::string>> commandMap = {};
+    std::vector<std::string> vocabulary = {};
+    std::vector<std::string> verbList = {};
+    std::vector<std::string> nounList = {};
+    std::vector<std::string> adjList = {};
+    std::vector<std::string> conjuctionList = {
+        "for", "and", "nor", "but", "or", "yet", "so",
+        "after", "although", "because", "if", "since", "until", "when",
+        "either", "or", "neither", "nor", "both", "and", "not only", "but also"
+    };
+
+    bool BuildVocabulary() {
+
+        // First Add in all of the commands
+        for (const auto& genCmd : this->commandMap) {
+            const std::vector<std::string>& synonyms = genCmd.second;
+            for (const auto& syn : synonyms) {
+                this->vocabulary.push_back(syn);    // Add all of the Verbs to the Vocabulary
+                this->verbList.push_back(syn);    // Add all of the Verbs to the verbList
+            }
+        }
+
+        // Add in objects and basic descriptors? 
+
+        return true;
+    }
 
     std::string toLowercase(const std::string& input) {
         std::string result = input;
@@ -173,6 +209,8 @@ private:
 
         // tokenize the input string while converting everything to lowercase
         while (iss >> token) {
+            if (std::find(this->conjuctionList.begin(), this->conjuctionList.end(), token) != this->conjuctionList.end())
+                continue;
             tokens.push_back(token);
         }
 

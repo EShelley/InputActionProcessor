@@ -9,13 +9,12 @@
 std::string getAction(const std::string& input, const std::unordered_map<std::string, std::vector<std::string>>& synonymMap);
 std::unordered_map<std::string, std::vector<std::string>> loadMapFromJSON(const std::string& filename);
 
-// #define TOKEN_DEBUGGER
 
 int main()
 {   
     
-    InputProcessor b = InputProcessor();
-    b.loadMapFromJSON("./commands.json");
+    InputProcessor b = InputProcessor("./commands.json");
+    
     b.DisplayCommands();
 
     std::string input = {};
